@@ -203,7 +203,7 @@ void GpsPlugin::Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf)
     gzwarn << "[gazebo_gps_plugin] Using default update rate of "
            << kDefaultUpdateRate << "hz \n";
   }
-  parentSensor_->SetUpdateRate(update_rate_);
+  parentSensor_->SetUpdateRate(10);
 
   node_handle_ = transport::NodePtr(new transport::Node());
   node_handle_->Init(namespace_);
@@ -336,7 +336,7 @@ void GpsPlugin::OnSensorUpdate()
 
   sensor_msgs::msgs::SITLGps gps_msg;
   // apply GPS delay
-  if ((current_time_ - last_gps_time_).Double() > 1 / parentSensor_->UpdateRate()) {
+  if ((current_time_ - last_gps_time_).Double() > 1 / 10) {
     last_gps_time_ = current_time_;
 
     // do not sent empty msg
