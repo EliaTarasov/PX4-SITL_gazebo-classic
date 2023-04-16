@@ -12,6 +12,10 @@
     <include>
       <uri>model://asphalt_plane</uri>
     </include>
+    <include>
+       <uri>model://big_box4</uri>
+       <pose>-1140.0 1512.0 0.1 0 0 0</pose>
+    </include>
     <physics name='default_physics' default='0' type='ode'>
       <gravity>0 0 -9.8066</gravity>
       <ode>
