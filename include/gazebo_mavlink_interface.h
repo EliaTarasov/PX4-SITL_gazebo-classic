@@ -57,6 +57,7 @@
 #include <sdf/sdf.hh>
 #include <common.h>
 #include <Airspeed.pb.h>
+#include <AttitudeTarget.pb.h>
 #include <CommandMotorSpeed.pb.h>
 #include <MotorSpeed.pb.h>
 #include <Imu.pb.h>
@@ -84,6 +85,7 @@ namespace gazebo {
 typedef const boost::shared_ptr<const mav_msgs::msgs::CommandMotorSpeed> CommandMotorSpeedPtr;
 typedef const boost::shared_ptr<const nav_msgs::msgs::Odometry> OdomPtr;
 typedef const boost::shared_ptr<const sensor_msgs::msgs::Airspeed> AirspeedPtr;
+typedef const boost::shared_ptr<const sensor_msgs::msgs::AttitudeTarget> AttitudeTargetPtr;
 typedef const boost::shared_ptr<const sensor_msgs::msgs::Groundtruth> GtPtr;
 typedef const boost::shared_ptr<const sensor_msgs::msgs::Imu> ImuPtr;
 typedef const boost::shared_ptr<const sensor_msgs::msgs::IRLock> IRLockPtr;
@@ -113,6 +115,7 @@ static const std::string kDefaultMagTopic = "/mag";
 static const std::string kDefaultBarometerTopic = "/baro";
 static const std::string kDefaultWindTopic = "/world_wind";
 static const std::string kDefaultGroundtruthTopic = "/groundtruth";
+static const std::string kDefaultAttitudeTargetTopic = "/attitude_target";
 
 //! OR operation for the enumeration and unsigned types that returns the bitmask
 template<typename A, typename B>
@@ -177,6 +180,7 @@ private:
   void LidarCallback(LidarPtr& lidar_msg, const int& id);
   void SonarCallback(SonarPtr& sonar_msg, const int& id);
   void AirspeedCallback(AirspeedPtr& airspeed_msg, const int& id);
+  void AttitudeTargetCallback(AttitudeTargetPtr& attitudeTarget_msg);
   void OpticalFlowCallback(OpticalFlowPtr& opticalFlow_msg);
   void IRLockCallback(IRLockPtr& irlock_msg);
   void VisionCallback(OdomPtr& odom_msg);
@@ -227,6 +231,7 @@ private:
   transport::SubscriberPtr opticalFlow_sub_{nullptr};
   transport::SubscriberPtr irlock_sub_{nullptr};
   transport::SubscriberPtr groundtruth_sub_{nullptr};
+  transport::SubscriberPtr attitude_target_sub_{nullptr};
   transport::SubscriberPtr vision_sub_{nullptr};
   transport::SubscriberPtr mag_sub_{nullptr};
   transport::SubscriberPtr baro_sub_{nullptr};
@@ -238,6 +243,7 @@ private:
   std::string opticalFlow_sub_topic_{kDefaultOpticalFlowTopic};
   std::string irlock_sub_topic_{kDefaultIRLockTopic};
   std::string groundtruth_sub_topic_{kDefaultGroundtruthTopic};
+  std::string attitude_target_sub_topic_ {kDefaultAttitudeTargetTopic};
   std::string vision_sub_topic_{kDefaultVisionTopic};
   std::string mag_sub_topic_{kDefaultMagTopic};
   std::string baro_sub_topic_{kDefaultBarometerTopic};

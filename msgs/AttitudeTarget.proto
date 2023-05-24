@@ -1,0 +1,9 @@
+syntax = "proto2";
+package sensor_msgs.msgs;
+
+message AttitudeTarget
+{
+  required int64  time_usec             = 1;
+  required double azimuth_rad           = 2;
+  required double elevation_rad         = 3;
+}
