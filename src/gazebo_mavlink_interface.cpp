@@ -823,11 +823,10 @@ void GazeboMavlinkInterface::AttitudeTargetCallback(AttitudeTargetPtr& attitudeT
   attitude_target_msg.type_mask &= ATTITUDE_TARGET_TYPEMASK_BODY_PITCH_RATE_IGNORE;
   attitude_target_msg.type_mask &= ATTITUDE_TARGET_TYPEMASK_BODY_YAW_RATE_IGNORE;
   attitude_target_msg.type_mask &= ATTITUDE_TARGET_TYPEMASK_THROTTLE_IGNORE;
-  ignition::math::Quaterniond q_attitude_target(0, -attitudeTarget_msg->elevation_rad(), -attitudeTarget_msg->azimuth_rad());
-  attitude_target_msg.q[0] = q_attitude_target.W();
-  attitude_target_msg.q[1] = q_attitude_target.X();
-  attitude_target_msg.q[2] = q_attitude_target.Y();
-  attitude_target_msg.q[3] = q_attitude_target.Z();
+  attitude_target_msg.q[0] = 0;
+  attitude_target_msg.q[1] = -attitudeTarget_msg->elevation_rad();
+  attitude_target_msg.q[2] =  attitudeTarget_msg->azimuth_rad();
+  attitude_target_msg.q[3] = 0;
   mavlink_message_t msg;
   mavlink_msg_set_attitude_target_encode_chan(1, 200, MAVLINK_COMM_0, &msg, &attitude_target_msg);
   mavlink_interface_->send_mavlink_message(&msg);

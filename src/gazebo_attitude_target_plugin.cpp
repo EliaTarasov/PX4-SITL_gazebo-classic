@@ -111,50 +111,50 @@ void AttitudeTargetPlugin::OnUpdate(const common::UpdateInfo&)
 #endif
   double dt = (current_time - _last_pub_time).Double();
 
-  if (dt > 1.0 / _pub_rate) {
-
-    // get pose of the model that the plugin is attached to
+  // get pose of the model that the plugin is attached to
 #if GAZEBO_MAJOR_VERSION >= 9
-    ignition::math::Pose3d pose_model_world = _model->WorldPose();
+  ignition::math::Pose3d pose_model_world = _model->WorldPose();
 #else
-    ignition::math::Pose3d pose_model_world = ignitionFromGazeboMath(_model->GetWorldPose());
+  ignition::math::Pose3d pose_model_world = ignitionFromGazeboMath(_model->GetWorldPose());
 #endif
-    ignition::math::Pose3d pose_tgt_model; // pose of a target with respect to the model in ENU frame
-    pose_tgt_model.Pos().X() = _pose_tgt.Pos().X() - pose_model_world.Pos().X();
-    pose_tgt_model.Pos().Y() = _pose_tgt.Pos().Y() - pose_model_world.Pos().Y();
-    pose_tgt_model.Pos().Z() = _pose_tgt.Pos().Z() - pose_model_world.Pos().Z();
 
-    // pose of a target with respect to the model in FLU frame
-    ignition::math::Vector3d pose_tgt_model_flu = pose_model_world.Rot().Inverse().RotateVector(pose_tgt_model.Pos());
+  ignition::math::Pose3d pose_tgt_model; // direction to the target with respect to the model in ENU frame
+  pose_tgt_model.Pos().X() = _pose_tgt.Pos().X() - pose_model_world.Pos().X();
+  pose_tgt_model.Pos().Y() = _pose_tgt.Pos().Y() - pose_model_world.Pos().Y();
+  pose_tgt_model.Pos().Z() = _pose_tgt.Pos().Z() - pose_model_world.Pos().Z();
 
-    //auto fl_norm = sqrt(pow(pose_tgt_model_flu.X(), 2) + pow(pose_tgt_model_flu.Y(), 2));
-    auto azimuth = atan2(pose_tgt_model_flu.Y(), pose_tgt_model_flu.X());
+  auto xAxisENU = pose_model_world.Rot().XAxis();
+  //std::cout << "xAxisENU.X " << xAxisENU.X() << std::endl;
+  //std::cout << "xAxisENU.Y " << xAxisENU.Y() << std::endl;
+  //std::cout << "xAxisENU.Z " << xAxisENU.Z() << std::endl;
+  //std::cout << std::endl;
 
-    //auto fu_norm = sqrt(pow(pose_tgt_model_flu.X(), 2) + pow(pose_tgt_model_flu.Z(), 2));
-    auto elevation = atan2(pose_tgt_model_flu.Z(), pose_tgt_model_flu.X());
+  auto pose_tgt_model_xAxisENU = xAxisENU * pose_tgt_model.Pos().AbsDot(xAxisENU);
+  auto pose_tgt_model_xAxisENU_xy = ignition::math::Vector2(pose_tgt_model_xAxisENU.X(), pose_tgt_model_xAxisENU.Y());
+  //std::cout << "pose_tgt_model_xAxisENU.X = " << pose_tgt_model_xAxisENU.X() << std::endl;
+  //std::cout << "pose_tgt_model_xAxisENU.Y = " << pose_tgt_model_xAxisENU.Y() << std::endl;
+  //std::cout << "pose_tgt_model_xAxisENU.Z = " << pose_tgt_model_xAxisENU.Z() << std::endl;
+  //std::cout << std::endl;
 
-    /*
-    pose_model.Rot().Euler(pose_model_world.Rot().Roll(),
-                           pose_model_world.Rot().Pitch(),
-                           pose_model_world.Rot().Yaw());
+  auto pose_tgt_model_yAxisENU = pose_tgt_model.Pos() - pose_tgt_model_xAxisENU;
+  auto pose_tgt_model_yAxisENU_xy = ignition::math::Vector2(pose_tgt_model_yAxisENU.X(), pose_tgt_model_yAxisENU.Y());
+  //std::cout << "pose_tgt_model_yAxisENU.X = " << pose_tgt_model_yAxisENU.X() << std::endl;
+  //std::cout << "pose_tgt_model_yAxisENU.Y = " << pose_tgt_model_yAxisENU.Y() << std::endl;
+  //std::cout << "pose_tgt_model_yAxisENU.Z = " << pose_tgt_model_yAxisENU.Z() << std::endl;
+  //std::cout << std::endl;
 
-    std::cout << "target F pose in vehicle frame " << pose_tgt_model_flu.X() << std::endl;
-    std::cout << "target L pose in vehicle frame " << pose_tgt_model_flu.Y() << std::endl;
-    std::cout << "target U pose in vehicle frame " << pose_tgt_model_flu.Z() << std::endl;
-    */
+  //ignition::math::Quaternion q_ENU_to_AZIMUTH(ignition::math::Vector3(0.0, 0.0, azimuth));
+  // pose of the X-axis of model with respect to the AZIMUTH frame
+  //ignition::math::Vector3 x_axis_in_Azimuth = q_ENU_to_AZIMUTH.RotateVector();
 
-    /*
-    std::cout << "target F pose in vehicle frame " << pose_tgt_model_flu.X() << std::endl;
-    std::cout << "target L pose in vehicle frame " << pose_tgt_model_flu.Y() << std::endl;
-    std::cout << std::endl;
-    std::cout << "target azimuth " << azimuth << std::endl;
-    std::cout << "target elevation " << elevation << std::endl;
-    std::cout << std::endl;
-    */
+  auto azimuth_yaw = atan2(pose_tgt_model_yAxisENU_xy.Y(), pose_tgt_model_xAxisENU_xy.X());
+  auto elevation = 0;
+
+  if (dt > 1.0 / _pub_rate) {
 
     // Fill attitude target msg
     _att_tgt_msg.set_time_usec(current_time.Double() * 1e6);
-    _att_tgt_msg.set_azimuth_rad(azimuth);
+    _att_tgt_msg.set_azimuth_rad(azimuth_yaw);
     _att_tgt_msg.set_elevation_rad(elevation);
 
     _last_pub_time = current_time;
