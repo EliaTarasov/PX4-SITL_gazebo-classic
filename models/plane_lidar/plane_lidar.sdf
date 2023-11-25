@@ -22,7 +22,7 @@
     </include>
 
     <joint name="px4flow_joint" type="revolute">
-      <parent>iris::base_link</parent>
+      <parent>plane::base_link</parent>
       <child>px4flow::link</child>
       <axis>
         <xyz>0 0 1</xyz>
