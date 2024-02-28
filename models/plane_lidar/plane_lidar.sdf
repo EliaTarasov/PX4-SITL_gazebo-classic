@@ -5,6 +5,7 @@
     </include>
 
     <!--lidar-->
+	<!--
     <include>
       <uri>model://lidar</uri>
       <pose>0 0 0.15 0 0 0</pose>
@@ -14,6 +15,7 @@
       <parent>plane::base_link</parent>
       <child>lidar::link</child>
     </joint>
+	-->
 
     <!--px4flow camera-->
     <include>
