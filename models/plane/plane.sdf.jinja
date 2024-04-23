@@ -649,6 +649,12 @@
       <pubRate>50</pubRate>
       <baroTopic>/baro</baroTopic>
     </plugin>
+	<plugin name="attitude_target_plugin" filename="libgazebo_attitude_target_plugin.so">
+       <robotNamespace/>
+       <posCamXYZ>0.47 0  0</posCamXYZ>
+       <posCamRPY>0 -0.0 0</posCamRPY>
+       <pubRate>10</pubRate>
+    </plugin>
     <plugin name='mavlink_interface' filename='libgazebo_mavlink_interface.so'>
       <robotNamespace></robotNamespace>
       <imuSubTopic>/imu</imuSubTopic>
