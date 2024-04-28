@@ -151,7 +151,7 @@ void AttitudeTargetPlugin::OnUpdate(const common::UpdateInfo&)
 
   auto azimuth_body = atan2(pose_tgt_model_FLU.Y(), pose_tgt_model_FLU.X());
   auto elevation_body = atan2(-pose_tgt_model_FLU.Z(), sqrt(pose_tgt_model_FLU.X()*pose_tgt_model_FLU.X() + pose_tgt_model_FLU.Z()*pose_tgt_model_FLU.Z()));
-  auto tracking_status = (fabs(azimuth_body) < 0.5) && (fabs(elevation_body) < 0.5) && (pose_tgt_model_FLU.Length() < 800);
+  auto tracking_status = (fabs(azimuth_body) < 0.7) && (fabs(elevation_body) < 0.7) && (pose_tgt_model_FLU.Length() < 800);
 
   if (dt > 1.0 / _pub_rate) {
 
