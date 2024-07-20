@@ -4,28 +4,15 @@
       <uri>model://plane</uri>
     </include>
 
-    <!--lidar-->
-	<!--
+    <!--fpv camera-->
     <include>
-      <uri>model://lidar</uri>
-      <pose>0 0 0.15 0 0 0</pose>
-    </include>
-
-    <joint name="lidar_joint" type="fixed">
-      <parent>plane::base_link</parent>
-      <child>lidar::link</child>
-    </joint>
-	-->
-
-    <!--px4flow camera-->
-    <include>
-      <uri>model://px4flow</uri>
+      <uri>model://fpv_cam</uri>
       <pose>0.05 0 0.15 0 0 0</pose>
     </include>
 
-    <joint name="px4flow_joint" type="revolute">
+    <joint name="fpv_cam_joint" type="revolute">
       <parent>plane::base_link</parent>
-      <child>px4flow::link</child>
+      <child>fpv_cam::link</child>
       <axis>
         <xyz>0 0 1</xyz>
         <limit>
