@@ -16,13 +16,12 @@
        <uri>model://big_box4</uri>
        <pose>-1074.0 2144.0 0.1 0 0 0</pose>
     </include>
-	<!--
     <plugin name='wind_plugin' filename='libgazebo_wind_plugin.so'>
       <frameId>base_link</frameId>
       <robotNamespace/>
-      <windVelocityMean>5.0</windVelocityMean>
-      <windVelocityMax>10.0</windVelocityMax>
-      <windVelocityVariance>0.5</windVelocityVariance>
+      <windVelocityMean>10.0</windVelocityMean>
+      <windVelocityMax>15.0</windVelocityMax>
+      <windVelocityVariance>0.01</windVelocityVariance>
       <windDirectionMean>0 1 0</windDirectionMean>
       <windDirectionVariance>0</windDirectionVariance>
       <windGustStart>0</windGustStart>
@@ -34,7 +33,6 @@
       <windGustDirectionVariance>0</windGustDirectionVariance>
       <windPubTopic>world_wind</windPubTopic>
     </plugin>
-    -->
     <physics name='default_physics' default='0' type='ode'>
       <gravity>0 0 -9.8066</gravity>
       <ode>
