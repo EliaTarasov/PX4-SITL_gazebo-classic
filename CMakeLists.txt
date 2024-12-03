@@ -318,7 +318,6 @@ set(physics_msgs
 set(std_msgs msgs/Int32.proto)
 set(sensor_msgs
   msgs/Airspeed.proto
-  msgs/AttitudeTarget.proto
   msgs/Imu.proto
   msgs/IRLock.proto
   msgs/Float.proto
@@ -350,7 +349,6 @@ link_libraries(mav_msgs nav_msgs std_msgs sensor_msgs)
 link_libraries(physics_msgs)
 
 add_library(gazebo_airspeed_plugin SHARED src/gazebo_airspeed_plugin.cpp)
-add_library(gazebo_attitude_target_plugin SHARED src/gazebo_attitude_target_plugin.cpp)
 add_library(gazebo_camera_manager_plugin SHARED src/gazebo_camera_manager_plugin.cpp)
 add_library(gazebo_gps_plugin SHARED src/gazebo_gps_plugin.cpp)
 add_library(gazebo_groundtruth_plugin SHARED src/gazebo_groundtruth_plugin.cpp)
@@ -378,7 +376,6 @@ add_library(gazebo_drop_plugin SHARED src/gazebo_drop_plugin.cpp)
 
 set(plugins
   gazebo_airspeed_plugin
-  gazebo_attitude_target_plugin
   gazebo_camera_manager_plugin
   gazebo_gps_plugin
   gazebo_groundtruth_plugin

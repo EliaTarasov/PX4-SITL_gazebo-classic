@@ -1,6 +1,11 @@
 <?xml version="1.0" ?>
 <sdf version="1.5">
   <world name="default">
+    <scene>
+      <ambient>0.0 0.0 0.0 1</ambient>
+      <shadows>0</shadows>
+      <background>0.5 0.5 0.5 1</background>
+    </scene>
     <!-- A global light source -->
     <include>
       <uri>model://sun</uri>
@@ -12,29 +17,23 @@
     <include>
       <uri>model://asphalt_plane</uri>
     </include>
-    <include>
-       <uri>model://big_box4</uri>
-       <pose>2500.0 0.0 0.1 0 0 0</pose>
-    </include>
-	<!--
     <plugin name='wind_plugin' filename='libgazebo_wind_plugin.so'>
       <frameId>base_link</frameId>
       <robotNamespace/>
-      <windVelocityMean>5.0</windVelocityMean>
+      <windVelocityMean>10.0</windVelocityMean>
       <windVelocityMax>10.0</windVelocityMax>
-      <windVelocityVariance>0.5</windVelocityVariance>
+      <windVelocityVariance>0.0</windVelocityVariance>
       <windDirectionMean>0 1 0</windDirectionMean>
       <windDirectionVariance>0</windDirectionVariance>
       <windGustStart>0</windGustStart>
       <windGustDuration>0</windGustDuration>
       <windGustVelocityMean>0</windGustVelocityMean>
-      <windGustVelocityMax>20.0</windGustVelocityMax>
+      <windGustVelocityMax>0.0</windGustVelocityMax>
       <windGustVelocityVariance>0</windGustVelocityVariance>
       <windGustDirectionMean>1 0 0</windGustDirectionMean>
       <windGustDirectionVariance>0</windGustDirectionVariance>
       <windPubTopic>world_wind</windPubTopic>
     </plugin>
-    -->
     <physics name='default_physics' default='0' type='ode'>
       <gravity>0 0 -9.8066</gravity>
       <ode>

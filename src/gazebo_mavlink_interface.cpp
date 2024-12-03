@@ -422,7 +422,6 @@ void GazeboMavlinkInterface::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf
   opticalFlow_sub_ = node_handle_->Subscribe("~/" + model_->GetName() + opticalFlow_sub_topic_, &GazeboMavlinkInterface::OpticalFlowCallback, this);
   irlock_sub_ = node_handle_->Subscribe("~/" + model_->GetName() + irlock_sub_topic_, &GazeboMavlinkInterface::IRLockCallback, this);
   groundtruth_sub_ = node_handle_->Subscribe("~/" + model_->GetName() + groundtruth_sub_topic_, &GazeboMavlinkInterface::GroundtruthCallback, this);
-  attitude_target_sub_ = node_handle_->Subscribe("~/" + model_->GetName() + attitude_target_sub_topic_, &GazeboMavlinkInterface::AttitudeTargetCallback, this);
   vision_sub_ = node_handle_->Subscribe("~/" + model_->GetName() + vision_sub_topic_, &GazeboMavlinkInterface::VisionCallback, this);
   mag_sub_ = node_handle_->Subscribe("~/" + model_->GetName() + mag_sub_topic_, &GazeboMavlinkInterface::MagnetometerCallback, this);
   baro_sub_ = node_handle_->Subscribe("~/" + model_->GetName() + baro_sub_topic_, &GazeboMavlinkInterface::BarometerCallback, this);
@@ -812,24 +811,6 @@ void GazeboMavlinkInterface::GroundtruthCallback(GtPtr& groundtruth_msg) {
   groundtruth_altitude_ = groundtruth_msg->altitude();
   // the rest of the data is obtained directly on this interface and sent to
   // the FCU
-}
-
-void GazeboMavlinkInterface::AttitudeTargetCallback(AttitudeTargetPtr& attitudeTarget_msg) {
-  mavlink_set_attitude_target_t attitude_target_msg;
-  attitude_target_msg.time_boot_ms = attitudeTarget_msg->time_usec() / 1e3; // [ms]
-  attitude_target_msg.target_system = 0;
-  attitude_target_msg.target_component = 0;
-  attitude_target_msg.type_mask &= ATTITUDE_TARGET_TYPEMASK_BODY_ROLL_RATE_IGNORE;
-  attitude_target_msg.type_mask &= ATTITUDE_TARGET_TYPEMASK_BODY_PITCH_RATE_IGNORE;
-  attitude_target_msg.type_mask &= ATTITUDE_TARGET_TYPEMASK_BODY_YAW_RATE_IGNORE;
-  attitude_target_msg.type_mask &= ATTITUDE_TARGET_TYPEMASK_THROTTLE_IGNORE;
-  attitude_target_msg.q[0] = attitudeTarget_msg->tracking_status();
-  attitude_target_msg.q[1] = -attitudeTarget_msg->azimuth_rad();
-  attitude_target_msg.q[2] = -attitudeTarget_msg->elevation_rad();
-  attitude_target_msg.q[3] = 0;
-  mavlink_message_t msg;
-  mavlink_msg_set_attitude_target_encode_chan(1, 200, MAVLINK_COMM_0, &msg, &attitude_target_msg);
-  mavlink_interface_->send_mavlink_message(&msg);
 }
 
 void GazeboMavlinkInterface::LidarCallback(LidarPtr& lidar_message, const int& id) {
